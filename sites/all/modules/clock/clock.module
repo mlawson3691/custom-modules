@@ -1,0 +1,56 @@
+<?php
+
+function clock_menu() {
+    $items['clock'] = array(
+        'title' => 'Clock Angle Calculator',
+        'page callback' => 'drupal_get_form',
+        'page arguments' => array('clock_form'),
+        'access callback' => TRUE,
+        'type' => MENU_NORMAL_ITEM,
+    );
+    $items['clock_success_page'] = array(
+        'title' => 'Success',
+        'page callback' => 'clock_success',
+        'access callback' => TRUE,
+        'type' => MENU_CALLBACK,
+    );
+    return $items;
+}
+
+function clock_form() {
+    $form['hour_hand'] = array(
+        '#title' => 'Hour Hand',
+        '#type' => 'textfield',
+        '#description' => t('Enter an hour value, 1 to 12.'),
+    );
+    $form['minute_hand'] = array(
+        '#title' => 'Minute Hand',
+        '#type' => 'textfield',
+        '#description' => t('Enter a minute value, 1-59.'),
+    );
+    $form['submit'] = array(
+        '#type' => 'submit',
+        '#value' => 'Calculate Angle',
+    );
+    return $form;
+}
+
+function clock_form_submit($form, &$form_state) {
+    $hour_hand = $form_state['values']['hour_hand'];
+    $minute_hand = $form_state['values']['minute_hand'];
+
+    $minute_angle = $minute_hand / 60 * 360;
+    $hour_angle = ($hour_hand / 12 * 360) + (30 * $minute_hand / 60);
+
+    $difference_angle = abs($hour_angle - $minute_angle);
+    if ($difference_angle > 180) {
+        $difference_angle = 360 - $difference_angle;
+    }
+
+    $_SESSION['result'] = $difference_angle;
+    $form_state['redirect'] = 'clock_success_page';
+}
+
+function clock_success() {
+    return 'Your clock\'s smaller angle is ' . $_SESSION['result'];
+}

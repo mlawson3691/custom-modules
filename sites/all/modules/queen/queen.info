@@ -1,0 +1,5 @@
+name = Queen
+description = Vicious female rage based on coordinates and not time of the month.
+package = Epicodus Examples
+core = 7.x
+files[] = queen.module

@@ -1,0 +1,5 @@
+name = Clock Angle
+description = Calculate the angle of a clock face.
+package = Epicodus Examples
+core = 7.x
+files[] = clock.module

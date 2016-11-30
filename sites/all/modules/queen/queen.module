@@ -1,0 +1,56 @@
+<?php
+
+function queen_menu() {
+    $items['queen'] = array(
+        'title' => 'Pinpoint Target for Queen Assassin',
+        'page callback' => 'drupal_get_form',
+        'page arguments' => array('queen_form'),
+        'access callback' => TRUE,
+        'type' => MENU_NORMAL_ITEM,
+    );
+    $items['queen_success_page'] = array(
+        'title' => 'Success',
+        'page callback' => 'queen_success',
+        'access callback' => TRUE,
+        'type' => MENU_CALLBACK,
+    );
+    return $items;
+}
+
+function queen_form() {
+    $form['x_coordinate'] = array(
+        '#title' => 'X-Coordinate',
+        '#type' => 'textfield',
+        '#description' => 'Enter an x-coordinate.'
+    );
+    $form['y_coordinate'] = array(
+        '#title' => 'Y-Coordinate',
+        '#type' => 'textfield',
+        '#description' => 'Enter a y-coordinate.'
+    );
+    $form['submit'] = array(
+        '#type' => 'submit',
+        '#value' => 'Attack, mah lady!!!!',
+    );
+    return $form;
+}
+
+function queen_form_submit($form, &$form_state) {
+    $x_coordinate = $form_state['values']['x_coordinate'];
+    $y_coordinate = $form_state['values']['y_coordinate'];
+    $queen_x = 4;
+    $queen_y = 1;
+    if($x_coordinate == $queen_x || $y_coordinate == $queen_y || (abs($x_coordinate-$queen_x) === abs($y_coordinate-$queen_y))) {
+        $_SESSION['result'] = "The opponent is slain 😈 ! Hail, Queen Bae! 👑";
+    } elseif($x_coordinate > 8 || $y_coordinate > 8 || $x_coordinate < 1 || $y_coordinate < 1) {
+        $_SESSION['result'] = "Queen Bae has flown off the board and is no more! Her citizens weep: 😭 😭 😭 ";
+    } else {
+        $_SESSION['result'] = "Queen Bae missed! Time for treaty negotiations ✒️";
+    }
+
+    $form_state['redirect'] = 'queen_success_page';
+}
+
+function queen_success() {
+    return $_SESSION['result'];
+}
