@@ -1,0 +1,5 @@
+name = Ping Pong
+description = Replacing numbers with Ping and Pong and PingPong
+package = Epicodus Examples
+core = 7.x
+files[] = ping_pong.module

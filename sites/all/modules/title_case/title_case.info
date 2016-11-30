@@ -1,0 +1,5 @@
+name = Title Case
+description = Converts text to title case from form input.
+package = Epicodus Examples
+core = 7.x
+files[] = title_case.module
