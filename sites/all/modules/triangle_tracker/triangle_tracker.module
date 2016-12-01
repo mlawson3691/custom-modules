@@ -1,0 +1,75 @@
+<?php
+    function triangle_tracker_menu(){
+        $items['triangle_tracker'] = array(
+            'title' => 'Triangle Tracker',
+            'page callback' => 'drupal_get_form',
+            'page arguments' => array('triangle_tracker_form'),
+            'access callback' => TRUE,
+            'type' => MENU_NORMAL_ITEM,
+        );
+        $items['triangle_tracker_results_page'] = array(
+            'title' => 'The Results are In:',
+            'page callback' => 'triangle_tracker_results',
+            'access callback' => TRUE,
+            'type' => MENU_CALLBACK,
+        );
+        return $items;
+    }
+    function triangle_tracker_form(){
+        $form['side_1'] = array(
+            '#title' => 'Side 1',
+            '#type' => 'textfield',
+            '#required' => TRUE,
+            '#element_validate' => array('element_validate_integer_positive'),
+        );
+        $form['side_2'] = array(
+            '#title' => 'Side 2',
+            '#type' => 'textfield',
+            '#required' => TRUE,
+            '#element_validate' => array('element_validate_integer_positive'),
+        );
+        $form['side_3'] = array(
+            '#title' => 'Side 3',
+            '#type' => 'textfield',
+            '#required' => TRUE,
+            '#element_validate' => array('element_validate_integer_positive'),
+        );
+        $form['submit'] = array(
+            '#type' => 'submit',
+            '#value' => 'Will I be a triangle some day?',
+        );
+        return $form;
+    }
+
+function triangle_tracker_form_submit($form, &$form_state){
+    $side1 = intval($form_state['values']['side_1']);
+    $side2 = intval($form_state['values']['side_2']);
+    $side3 = intval($form_state['values']['side_3']);
+    $sides_array = array($side1, $side2, $side3);
+    rsort($sides_array);
+    if($sides_array[0] < ($sides_array[1]+ $sides_array[2])){
+        if($side1 == $side2 && $side2 == $side3){
+            $_SESSION['result'] = 'You\'ve got an equillateral triangle, son';
+        }
+        elseif($side1 == $side2 || $side2 == $side3){
+            $_SESSION['result'] = '
+            <img src="http://67.media.tumblr.com/tumblr_matdi7XJfm1rprzq9.gif">
+            <p>You\'ve got an isosceles triangle, son<p>';
+        }
+        elseif($side1 != $side2 && $side2 != $side3){
+            $_SESSION['result'] = '
+            <img src="http://i2.kym-cdn.com/photos/images/original/000/430/243/d8e.png">
+            <p>You\'ve got a scalene triangle<p>';
+        }
+    }
+    else{
+        $_SESSION['result'] = "nope";
+    }
+    $form_state['redirect'] = 'triangle_tracker_results_page';
+}
+
+
+
+function triangle_tracker_results(){
+    return $_SESSION['result'] . ' <a href="/triangle_tracker ">Try Again?</a>';
+}
