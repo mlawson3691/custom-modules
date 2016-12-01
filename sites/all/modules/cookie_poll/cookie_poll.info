@@ -1,0 +1,5 @@
+name = Cookie Dough Poll
+description = What kind of cookie dough do you like?
+package = Epicodus Examples
+core = 7.x
+files[] = cookie_poll.module
