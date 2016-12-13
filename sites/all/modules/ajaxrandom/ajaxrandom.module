@@ -1,0 +1,45 @@
+<?php
+
+// Include AJAX Library
+function ajaxrandom_init() {
+    drupal_add_library('system', 'drupal.ajax');
+}
+
+function ajaxrandom_menu() {
+    $items['node/rando-artico/%'] = array(
+        'access arguments' => array('access content'),
+        'page callback' => 'ajaxrandom_ajax_callback',
+        'page arguments' => array(2),
+        'access callback' => TRUE,
+        'type' => MENU_CALLBACK,
+    );
+    return $items;
+}
+
+function ajaxrandom_ajax_callback($js) {
+    $node_type = "article";
+
+    $result = db_query("SELECT nid FROM node WHERE type = :nodeType ", array(':nodeType'=>$node_type));
+
+    $nids = array();
+    foreach ($result as $obj) {
+        $nids[] = $obj->nid;
+    }
+
+    $length = count($nids);
+    $random_id = $nids[rand(0, $length-1)];
+
+    if ($js == 'nojs') {
+        drupal_goto('node/' . $random_id);
+    } else {
+        $node = node_load($random_id);
+        $build = node_view($node);
+        $html = render($build);
+        $commands = array();
+        $commands[] = ajax_command_html('#random-display', $html);
+        print ajax_render($commands);
+        exit;
+    }
+
+
+}

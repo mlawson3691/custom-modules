@@ -1,0 +1,6 @@
+name = Ajax Time Viewer
+description = Use ajax to display current time.
+package = Epicodus Examples
+core = 7.x
+files[] = ajaxtime.module
+scripts[] = ajaxtime.js
