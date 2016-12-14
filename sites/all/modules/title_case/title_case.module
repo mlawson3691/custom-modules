@@ -29,8 +29,8 @@ function title_case_form() {
     return $form;
 }
 
-function title_case_form_submit($form, &$form_state) {
-    $title = strtolower($form_state['values']['title']);
+function make_title_case($input) {
+    $title = strtolower($input);
     $title_array = explode(" ", $title);
     $exceptions = array('and', 'or', 'but', 'the', 'a', 'an', 'to', 'on', 'of');
     $index = 0;
@@ -40,7 +40,13 @@ function title_case_form_submit($form, &$form_state) {
         }
         $index ++;
     }
-    $_SESSION['result'] = implode(" ", $title_array);
+    return implode(" ", $title_array);
+}
+
+function title_case_form_submit($form, &$form_state) {
+    $input = $form_state['values']['title'];
+    $result = make_title_case($input);
+    $_SESSION['result'] = $result;
 
     $form_state['redirect'] = 'title_case_success_page';
 }

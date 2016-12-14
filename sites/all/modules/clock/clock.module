@@ -35,10 +35,7 @@ function clock_form() {
     return $form;
 }
 
-function clock_form_submit($form, &$form_state) {
-    $hour_hand = $form_state['values']['hour_hand'];
-    $minute_hand = $form_state['values']['minute_hand'];
-
+function clock_angle_calc($hour_hand, $minute_hand) {
     $minute_angle = $minute_hand / 60 * 360;
     $hour_angle = ($hour_hand / 12 * 360) + (30 * $minute_hand / 60);
 
@@ -46,6 +43,15 @@ function clock_form_submit($form, &$form_state) {
     if ($difference_angle > 180) {
         $difference_angle = 360 - $difference_angle;
     }
+
+    return $difference_angle;
+}
+
+function clock_form_submit($form, &$form_state) {
+    $hour_hand = $form_state['values']['hour_hand'];
+    $minute_hand = $form_state['values']['minute_hand'];
+
+    $difference_angle = clock_angle_calc($hour_hand, $minute_hand);
 
     $_SESSION['result'] = $difference_angle;
     $form_state['redirect'] = 'clock_success_page';

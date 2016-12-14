@@ -1,0 +1,22 @@
+<?php
+class ClockTestCase extends DrupalUnitTestCase
+{
+    public static function getInfo()
+    {
+        return array(
+            'name' => 'Clock unit tests',
+            'description' => 'Test that clock module works properly.',
+            'group' => 'Epicodus Examples Tests',
+        );
+    }
+
+    function testClockAngle()
+    {
+        $description = 'bloop';
+        $hour_hand = '12';
+        $minute_hand = '0';
+        $result = clock_angle_calc($hour_hand, $minute_hand);
+        $expected_output = 0;
+        $this->assertEqual($result, $expected_output, $description);
+    }
+}

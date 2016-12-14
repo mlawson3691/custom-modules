@@ -1,0 +1,51 @@
+<?php
+class TitleCaseTestCase extends DrupalUnitTestCase
+{
+    public static function getInfo()
+    {
+        return array(
+        'name' => 'My Title Case unit tests',
+        'description' => 'Test that title_case module works properly.',
+        'group' => 'Epicodus Examples Tests',
+        );
+    }
+
+    function testTitleCase()
+    {
+        $description = 'lowercased letter should return uppercased :-o';
+        $input = 'a';
+        $result = make_title_case($input);
+        $expected_output = 'A';
+        $this->assertEqual($result, $expected_output, $description);
+
+        $description = 'lowercased word should return titlecase :-o';
+        $input = 'dog';
+        $result = make_title_case($input);
+        $expected_output = 'Dog';
+        $this->assertEqual($result, $expected_output, $description);
+
+        $description = 'uppercase word should return titlecase :-o';
+        $input = 'DOG';
+        $result = make_title_case($input);
+        $expected_output = 'Dog';
+        $this->assertEqual($result, $expected_output, $description);
+
+        $description = 'sentence should return titlecase :-o';
+        $input = 'dog is not cat';
+        $result = make_title_case($input);
+        $expected_output = 'Dog Is Not Cat';
+        $this->assertEqual($result, $expected_output, $description);
+
+        $description = 'certain words will not be capitalized :-o';
+        $input = 'dog is not a cat or a rabbit';
+        $result = make_title_case($input);
+        $expected_output = 'Dog Is Not a Cat or a Rabbit';
+        $this->assertEqual($result, $expected_output, $description);
+
+        $description = 'certain words will not be capitalized except at beginning of sentence :-o';
+        $input = 'a dog is not a cat or a rabbit';
+        $result = make_title_case($input);
+        $expected_output = 'A Dog Is Not a Cat or a Rabbit';
+        $this->assertEqual($result, $expected_output, $description);
+    }
+}
